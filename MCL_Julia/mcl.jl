@@ -106,7 +106,3 @@ function mcl_prob_dumb(a,b,p1,p2,T,e,r,p)
   end
 end
 
-mcl_prob_dumb(2,0,1,0,100,2,3,100)
-G = mcl_sample_dumb(2,4,1,0)
-mcl(G,2,3,100)
-

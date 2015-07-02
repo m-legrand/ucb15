@@ -36,3 +36,7 @@
 ehthumbs.db
 Thumbs.db
 
+# Specific ignored files #
+##########################
+test_netplot.jl
+*.ipynb*

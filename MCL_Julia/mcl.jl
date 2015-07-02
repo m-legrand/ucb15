@@ -72,14 +72,39 @@ function fst_non_zero(v)
   return r
 end
 
-"Return a vector containing one attracting vertex by spotted cluster"
+r = [0,1,2]
+find(r)
+find(x -> x==3, r)
+
+"""Search a element in a vector of vectors :
+ - returns 0 if not found
+ - returns the index of the first vector containing it otherwise"""
+function vvfind(k,r)
+  for i in 1:length(r)
+    if length(find(x -> x==k, r[i])) != 0
+      return i
+    end
+  end
+  return 0
+end
+
+"Return a vector containing clusters"
 function mcl_clust(G)
   n = size(G,1)
-  r = [0][1,1:0]
+  r = Vector[]
   for i = 1:n
     k = fst_non_zero(G[i,:])
-    if ∉(k, r)
-      r = [k r]
+    s = vvfind(k,r)
+    if s == 0
+      if i == k
+        push!(r, [i])
+      else
+        push!(r, [k,i])
+      end
+    else
+      if i != k
+        push!(r[s],i)
+      end
     end
   end
   return r
@@ -87,7 +112,7 @@ end
 
 "Return the number of spotted clusters"
 function mcl_card(G)
-  return size(mcl_clust(G),2)
+  return length(mcl_clust(G))
 end
 
 "Heuristic approximation of the probability of recognizing two clusters generated with mcl_sample_dumb, of size a and b, with T iterations"

@@ -14,9 +14,9 @@ function plot_vertices(Coordinates)
   plot(x=x_coor, y=y_coor, Geom.point)
 end
 
-"Plot a undirected n-network given :
+"""Plot a undirected n-network given :
  - a n*2 array of vertices coordinates
- - a n*n adjacency matrix (meant symetric : only inferior part is used)"
+ - a n*n adjacency matrix (meant symetric : only inferior part is used)"""
 function graphplot(A,C,test_mcl=false)
   n = size(C,1)
   xn1 = Float64[]
@@ -39,16 +39,13 @@ function graphplot(A,C,test_mcl=false)
           layer(x = [xn1[i], xn2[i]], y = [yn1[i], yn2[i]], Geom.line)[1])
   end
   if test_mcl
+    Am = mcl
     push!(layers, layer(x = C[:,1], y = C[:,2], Geom.point)[1]) # À CHANGER #
   else
     push!(layers, layer(x = C[:,1], y = C[:,2], Geom.point)[1])
   end
   plot(layers)
 end
-
-# 'Force-directed' layout
-# Inspired from physics, but not physically correct
-# Notations of 'Simple Algorithms for Network Visualization' by M. J. McGuffin
 
 "Regular polygon positionning"
 function rpolygon(n, center, radius)
@@ -69,7 +66,9 @@ function spart(x::Float64)
   end
 end
 
-"Force-directed layout"
+"""Force-directed layout
+Inspired from physics, but not physically correct
+Notations of "Simple Algorithms for Network Visualization" by M. J. McGuffin"""
 function netplot(A, K, init="rand", test_mcl=false)
   n = size(A,1)
   R = 10
@@ -133,5 +132,3 @@ function netplot(A, K, init="rand", test_mcl=false)
     return graphplot(A,nodes)
   end
 end
-
-netplot(mcl_sample_dumb(4,16,0.9,0.1), 10000)

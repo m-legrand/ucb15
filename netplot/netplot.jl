@@ -17,7 +17,7 @@ end
 """Plot a undirected n-network given :
  - a n*2 array of vertices coordinates
  - a n*n adjacency matrix (meant symetric : only inferior part is used)"""
-function graphplot(A,C,test_mcl=false)
+function graphplot(A,C;test_mcl=false,e=2,r=3,p=20)
   n = size(C,1)
   xn1 = Float64[]
   yn1 = Float64[]
@@ -36,11 +36,11 @@ function graphplot(A,C,test_mcl=false)
   layers = Layer[]
   for i=1:length(xn1)
     push!(layers,
-          layer(x = [xn1[i], xn2[i]], y = [yn1[i], yn2[i]], Geom.line)[1])
+          layer(x = [xn1[i], xn2[i]], y = [yn1[i], yn2[i]], Geom.line, Theme(default_color=color("lightgrey")))[1])
   end
   if test_mcl
-    Am = mcl
-    push!(layers, layer(x = C[:,1], y = C[:,2], Geom.point)[1]) # À CHANGER #
+    part = map(k -> "$(vvfind(k,mcl_clust(mcl(A,e,r,p))))", 1:n)
+    push!(layers, layer(x = C[:,1], y = C[:,2], color = part, Geom.point)[1])
   else
     push!(layers, layer(x = C[:,1], y = C[:,2], Geom.point)[1])
   end
@@ -69,7 +69,7 @@ end
 """Force-directed layout
 Inspired from physics, but not physically correct
 Notations of "Simple Algorithms for Network Visualization" by M. J. McGuffin"""
-function netplot(A, K, init="rand", test_mcl=false)
+function netplot(A, K; test_mcl=false, init="rand")
   n = size(A,1)
   R = 10
   L = 2*R/(n/2)
@@ -116,19 +116,9 @@ function netplot(A, K, init="rand", test_mcl=false)
     for i in 1:n
       dx = delta * forces[i,1]
       dy = delta * forces[i,2]
-#       d2 = dx*dx + dy*dy
-#       if d2 > d2max
-#         s = sqrt(d2max / d2)
-#         dx = dx * s
-#         dy = dy * s
-#       end
       nodes[i,1] = nodes[i,1] + dx
       nodes[i,2] = nodes[i,2] + dy
     end
   end
-  if test_mcl
-    return graphplot(A,nodes) # À CHANGER #
-  else
-    return graphplot(A,nodes)
-  end
+  return graphplot(A,nodes,test_mcl)
 end

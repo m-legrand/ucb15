@@ -49,7 +49,7 @@ function mcl_inflate(A,r)
 end
 
 "Apply MCL algorithm with expansion parameter e, inflation parameter r and p iterations"
-function mcl(A,e,r,p)
+function mcl(A;e=2,r=3,p=20)
   B = mcl_norm(A)
   for i=1:p
     B = mcl_norm(mcl_inflate(mcl_expand(B,e),r))
@@ -72,20 +72,36 @@ function fst_non_zero(v)
   return r
 end
 
-r = [0,1,2]
-find(r)
-find(x -> x==3, r)
-
 """Search a element in a vector of vectors :
  - returns 0 if not found
  - returns the index of the first vector containing it otherwise"""
-function vvfind(k,r)
-  for i in 1:length(r)
-    if length(find(x -> x==k, r[i])) != 0
+function vvfind(k,v)
+  for i in 1:length(v)
+    if length(find(x -> x==k, v[i])) != 0
       return i
     end
   end
   return 0
+end
+
+r = Vector[]
+push!(r, [1,2,3])
+push!(r, [4,5])
+push!(r, [6])
+map(k -> vvfind(k,r), [1,2,3,4,5,6])
+
+"Returns the first element of each vector of a vectors vector"
+function vvfirst(v)
+  K = find(x -> length(x) != 0, v)
+  if length(K) == 0
+    return Any[]
+  else
+    r = [v[K[1]][1]]
+    for k in K[2:end]
+      push!(r, v[k][1])
+    end
+    return r
+  end
 end
 
 "Return a vector containing clusters"
@@ -116,7 +132,7 @@ function mcl_card(G)
 end
 
 "Heuristic approximation of the probability of recognizing two clusters generated with mcl_sample_dumb, of size a and b, with T iterations"
-function mcl_prob_dumb(a,b,p1,p2,T,e,r,p)
+function mcl_prob_dumb(a,b,p1,p2,T;e=2,r=3,p=20)
   if a == 0 || b == 0
     return 0.
   else

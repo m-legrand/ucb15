@@ -38,5 +38,5 @@ Thumbs.db
 
 # Specific ignored files #
 ##########################
-test_netplot.jl
+# test_netplot.jl
 *.ipynb*

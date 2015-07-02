@@ -105,4 +105,3 @@ function mcl_prob_dumb(a,b,p1,p2,T,e,r,p)
   return result/T
   end
 end
-

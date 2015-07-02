@@ -4,7 +4,8 @@
 ################################################################################
 
 # Pkg.add("Gadfly")
-using Gadfly
+# using Gadfly
+# include("../MCL_Julia/mcl.jl")
 
 "Plots n vertices given through a n*2 array."
 function plot_vertices(Coordinates)
@@ -16,7 +17,7 @@ end
 "Plot a undirected n-network given :
  - a n*2 array of vertices coordinates
  - a n*n adjacency matrix (meant symetric : only inferior part is used)"
-function graphplot(A,C)
+function graphplot(A,C,test_mcl=false)
   n = size(C,1)
   xn1 = Float64[]
   yn1 = Float64[]
@@ -37,17 +38,51 @@ function graphplot(A,C)
     push!(layers,
           layer(x = [xn1[i], xn2[i]], y = [yn1[i], yn2[i]], Geom.line)[1])
   end
-  push!(layers, layer(x = C[:,1], y = C[:,2], Geom.point)[1])
+  if test_mcl
+    push!(layers, layer(x = C[:,1], y = C[:,2], Geom.point)[1]) # À CHANGER #
+  else
+    push!(layers, layer(x = C[:,1], y = C[:,2], Geom.point)[1])
+  end
   plot(layers)
 end
 
 # 'Force-directed' layout
 # Inspired from physics, but not physically correct
 # Notations of 'Simple Algorithms for Network Visualization' by M. J. McGuffin
+
+"Regular polygon positionning"
+function rpolygon(n, center, radius)
+  nodes = zeros(n,2)
+  for i in 1:n
+    nodes[i,1] = center[1] + radius * cos(2*i*pi/n)
+    nodes[i,2] = center[2] + radius * sin(2*i*pi/n)
+  end
+  return nodes
+end
+
+"Superior part"
+function spart(x::Float64)
+  if x >= 0.
+    return x
+  else
+    return 0.
+  end
+end
+
 "Force-directed layout"
-function netplot(A, L, Kr, Ks, K, delta, d2max, nodes)
-  n = size(nodes,1)
-  nodes = convert(Array{Float64,2},nodes)
+function netplot(A, K, init="rand", test_mcl=false)
+  n = size(A,1)
+  R = 10
+  L = 2*R/(n/2)
+  Kr = 1
+  Ks = 1
+  delta = 2*R/K
+  d2max = 2*R
+  if init == "polygon"
+    nodes = convert(Array{Float64,2}, rpolygon(n, [0 0], R))
+  elseif init == "rand"
+    nodes = -R + 2*R*rand(n,2)
+  end
   for k in 1:K
     forces = zeros(n,2)
     for i1 in 1:(n-1)
@@ -58,7 +93,7 @@ function netplot(A, L, Kr, Ks, K, delta, d2max, nodes)
           d2 = dx*dx + dy*dy
           d = sqrt(d2)
           # Repulsive force Fr = Kr/d^2
-          Fr = Kr / d2
+          Fr = Kr / ((L/10) + d2)
           fx = Fr * dx / d
           fy = Fr * dy / d
           forces[i1,1] = forces[i1,1] - fx
@@ -67,7 +102,7 @@ function netplot(A, L, Kr, Ks, K, delta, d2max, nodes)
           forces[i2,2] = forces[i2,2] + fy
           # Spring force Fs = Ks(d-L)
           if A[i1,i2] != 0
-            Fs = Ks * (d - L)
+            Fs = Ks * spart(d - L)
             fx = Fs * dx / d
             fy = Fs * dy / d
             forces[i1,1] = forces[i1,1] + fx
@@ -92,5 +127,11 @@ function netplot(A, L, Kr, Ks, K, delta, d2max, nodes)
       nodes[i,2] = nodes[i,2] + dy
     end
   end
-  return graphplot(A,nodes)
+  if test_mcl
+    return graphplot(A,nodes) # À CHANGER #
+  else
+    return graphplot(A,nodes)
+  end
 end
+
+netplot(mcl_sample_dumb(4,16,0.9,0.1), 10000)

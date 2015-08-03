@@ -17,7 +17,10 @@ function mcl_sample_dumb(a,b,p1,p2)
   return G
 end
 
-"Sample for SBM"
+"""Sample for SBM
+l is the vector of the sizes of the wanted clusters
+p is the vector of their intra-cluster connection probability
+p0 is the inter-cluster connection probability"""
 function mcl_sample_sbm(l,p,p0)
   s = size(l,1)
   n = sum(l)

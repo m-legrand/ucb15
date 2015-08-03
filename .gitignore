@@ -38,5 +38,10 @@ Thumbs.db
 
 # Specific ignored files #
 ##########################
-# test_netplot.jl
-*.ipynb*
+.ipynb_checkpoints
+# The following can be obtained with julia command :
+# ipython nbconvert --to FORMAT notebook.ipynb
+# with FORMAT in html, latex, pdf, python, markdown, slides ...
+*.html
+*.tex
+*.pdf

@@ -1,3 +1,6 @@
+# Main functions used for work on MCL woth Julia
+# Berkeley 2015 - Maxime Legrand
+
 function bern(k,l,p)
   A = rand(k,l)
   B = p*ones(k,l)

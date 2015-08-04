@@ -1,4 +1,5 @@
-#Plot tools using Gadfly library for Julia
+# Plot tools using Gadfly library for Julia
+# Berkeley 2015 - Maxime Legrand
 
 #Pkg.add("Gadfly")
 #Pkg.add("DataFrames")

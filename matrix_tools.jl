@@ -20,7 +20,7 @@ Input : A, square matrix
 Output : B, A with a shuffle applied to its base of representation 
     (vertices in the case of an adjacency matrix)"""
 function mat_shuffle(A)
-    n = siza(A,1)
+    n = size(A,1)
     v = shuffle([1:n])
     return mat_perm(A,perm=v)
 end

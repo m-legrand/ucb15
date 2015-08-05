@@ -4,6 +4,7 @@
 #Pkg.add("Gadfly")
 using Gadfly
 include("../plot_tools.jl")
+include("../matrix_tools.jl")
 include("mcl.jl")
 
 #####################################
@@ -56,8 +57,9 @@ end
 # Tools
 
 """SBM form
-Input : A adjacency matrix, C vector of clusters (represented as vectors as well)
-Output : B reorganised adjacency matrix from A to fit SBM output common outfit"""
+Input : A, adjacency matrix
+    C, vector of clusters (represented as vectors as well)
+Output : B, reorganised adjacency matrix from A to fit SBM output common outfit"""
 function sbm_form(A,C)
     # Vertices permutation
     n = size(A,1)
@@ -66,12 +68,12 @@ function sbm_form(A,C)
     s = 1
     for k = 1:K
         for i = 1:(size(C[k],1))
-            v[C[k][i]] = s
+            v[s] = C[k][i]
             s += 1
         end
     end
     # Output making
-    B = A
+    B = zeros(n,n)
     for i = 1:n
         for j = 1:n
             B[i,j] = A[v[i],v[j]]
@@ -81,6 +83,42 @@ function sbm_form(A,C)
 end
 
 # SBM Prototype
+
+"""SBM ML parameters
+Input : A, adjacency matrix in SBM form
+    l, vector of the sizes of the clusters
+Output : p, vector of their intra-cluster connection probability
+    p0, inter-cluster connection probability"""
+function sbm_parameters(A, l)
+    n = size(A,1)
+    K = size(l,1)
+    p = zeros(K)
+    s1 = 0
+    p0 = 0
+    for k1 = 1:K 
+        s2 = 0
+        for k2 = 1:K 
+            for i = 1:l[k1]
+                for j = 1:l[k2]
+                    if k1 == k2
+                        p[k1] += A[s1+i,s2+j]
+                    else
+                        p0 += A[s1+i,s2+j]
+                    end
+                end
+            end
+            s2 += l[k2]
+        end
+        s1 += l[k1]
+    end
+    l2 = map(x -> x^2, l)
+    p = p./l2
+    n0 = n^2-sum(l2)
+    if n0 != 0 
+        p0 = p0/n0 
+    end
+    return (p,p0)
+end
 
 # DC-SBM Prototype
 

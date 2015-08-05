@@ -41,6 +41,7 @@ Thumbs.db
 .ipynb_checkpoints
 *.ipynb
 test_*
+data
 *.html
 *.tex
 *.pdf

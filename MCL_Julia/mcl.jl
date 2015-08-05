@@ -1,4 +1,4 @@
-# Main functions used for work on MCL woth Julia
+# Main functions used for work on MCL with Julia
 # Berkeley 2015 - Maxime Legrand
 
 function bern(k,l,p)
@@ -21,9 +21,10 @@ function mcl_sample_dumb(a,b,p1,p2)
 end
 
 """Sample for SBM
-l is the vector of the sizes of the wanted clusters
-p is the vector of their intra-cluster connection probability
-p0 is the inter-cluster connection probability"""
+Input : l, vector of the sizes of the wanted clusters
+    p, vector of their intra-cluster connection probability
+    p0, inter-cluster connection probability
+Output : corresponding SBM sample matrix"""
 function mcl_sample_sbm(l,p,p0)
   s = size(l,1)
   n = sum(l)
@@ -54,7 +55,12 @@ function mcl_inflate(A,r)
   return B
 end
 
-"Apply MCL algorithm with expansion parameter e, inflation parameter r and p iterations"
+"""MCL algorithm
+Input : A, adjacency matrix
+    e, expansion parameter
+    r, inflation parameter
+    p, number of iterations
+Output : corresponding result of MCL algorithm"""
 function mcl(A;e=2,r=3,p=20)
   B = mcl_norm(A)
   for i=1:p
@@ -63,7 +69,9 @@ function mcl(A;e=2,r=3,p=20)
   return B
 end
 
-"Return the first non-zero element of a vector `v`, and `0` if there is none."
+"""First non-zero
+Input : v, vector
+Output : first non-zero element of v"""
 function fst_non_zero(v)
   n = length(v)
   r = n+1
@@ -78,9 +86,10 @@ function fst_non_zero(v)
   return r
 end
 
-"""Search a element in a vector of vectors :
- - returns 0 if not found
- - returns the index of the first vector containing it otherwise"""
+"""Element finding in a vector of vectors
+Input : k, element to find
+    v, vector of vectors
+Output : index of the first vector containing k if found, 0 otherwise"""
 function vvfind(k,v)
   for i in 1:length(v)
     if length(find(x -> x==k, v[i])) != 0
@@ -89,12 +98,6 @@ function vvfind(k,v)
   end
   return 0
 end
-
-r = Vector[]
-push!(r, [1,2,3])
-push!(r, [4,5])
-push!(r, [6])
-map(k -> vvfind(k,r), [1,2,3,4,5,6])
 
 "Returns the first element of each vector of a vectors vector"
 function vvfirst(v)
@@ -110,8 +113,13 @@ function vvfirst(v)
   end
 end
 
-"Return a vector containing clusters"
-function mcl_clust(G)
+"""Return a vector containing clusters
+Input : G, typical output of MCL algorithm
+    sort_v, set to true to sort vertices inside clusters
+    sort_c, set to true to sort clusters by increasing size
+    rev, set to true along with sort_c to sort by decreasing size"""
+function mcl_clust(G; sort_v=false, sort_c=false, rev=false)
+  # Main part
   n = size(G,1)
   r = Vector[]
   for i = 1:n
@@ -128,6 +136,17 @@ function mcl_clust(G)
         push!(r[s],i)
       end
     end
+  end
+  # Vertices sorting part
+  if sort_v
+    for k in 1:size(r,1)
+      sort!(r[k])
+    end
+  end
+  # Clusters sorting part
+  if sort_c
+        p = sortperm(map(length, r), rev=rev)
+    r = r[p]
   end
   return r
 end

@@ -39,7 +39,7 @@ function graphplot(A,C;test_mcl=false,e=2,r=3,p=20)
           layer(x = [xn1[i], xn2[i]], y = [yn1[i], yn2[i]], Geom.line, Theme(default_color=color("lightgrey")))[1])
   end
   if test_mcl
-    part = map(k -> "$(vvfind(k,mcl_clust(mcl(A,e,r,p))))", 1:n)
+        part = map(k -> "$(vvfind(k,mcl_clust(mcl(A,e=e,r=r,p=p))))", 1:n)
     push!(layers, layer(x = C[:,1], y = C[:,2], color = part, Geom.point)[1])
   else
     push!(layers, layer(x = C[:,1], y = C[:,2], Geom.point)[1])
@@ -68,8 +68,13 @@ end
 
 """Force-directed layout
 Inspired from physics, but not physically correct
-Notations of "Simple Algorithms for Network Visualization" by M. J. McGuffin"""
-function netplot(A, K; test_mcl=false, init="rand")
+Notations of "Simple Algorithms for Network Visualization" by M. J. McGuffin
+Input : A, adjacency matrix of an undirected network
+    K, number of steps taken by the algorithm
+    test_mcl, boolean deciding whether MCL algorithm is executed for determining and coloring expected clusters
+    init, string setting the original position of the vertices
+Output : corresponding graph"""
+function netplot(A; K=100, test_mcl=false, init="rand")
   n = size(A,1)
   R = 10
   L = 2*R/(n/2)
@@ -120,5 +125,5 @@ function netplot(A, K; test_mcl=false, init="rand")
       nodes[i,2] = nodes[i,2] + dy
     end
   end
-  return graphplot(A,nodes,test_mcl)
+    return graphplot(A,nodes,test_mcl=test_mcl)
 end

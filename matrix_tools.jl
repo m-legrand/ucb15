@@ -5,8 +5,8 @@
 Input : A square matrix
 Output : B with a shuffle applied to its base of representation 
     (vertices in the case of an adjacency matrix)"""
-function mat_suffle(A)
-    n = size(B,1)
+function mat_shuffle(A)
+    n = size(A,1)
     v = shuffle([1:n])
     B = [A[v[i],v[j]] for i=1:n, j=1:n]
     return B

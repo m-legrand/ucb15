@@ -14,11 +14,13 @@ function plot_vertices(Coordinates)
   plot(x=x_coor, y=y_coor, Geom.point)
 end
 
-"""Plot a undirected n-network given :
- - a n*2 array of vertices coordinates
- - a n*n adjacency matrix (meant symetric : only inferior part is used)"""
-function graphplot(A,C;test_mcl=false,e=2,r=3,p=20)
-  n = size(C,1)
+"""Graph Plot
+Input : V, n*2 matrix of vextices coordinates
+    A, n*n adjacency matrix
+C, a vector of clusters to differentiate by vertices' color, Vector[] by default
+Output : Corresponding undirected n-network plot"""
+function graphplot(V,A;C=Vector[])
+  n = size(V,1)
   xn1 = Float64[]
   yn1 = Float64[]
   xn2 = Float64[]
@@ -26,10 +28,10 @@ function graphplot(A,C;test_mcl=false,e=2,r=3,p=20)
   for i in 1:n
     for j in 1:i
       if A[i,j] != 0
-        push!(xn1, C[i,1])
-        push!(yn1, C[i,2])
-        push!(xn2, C[j,1])
-        push!(yn2, C[j,2])
+        push!(xn1, V[i,1])
+        push!(yn1, V[i,2])
+        push!(xn2, V[j,1])
+        push!(yn2, V[j,2])
       end
     end
   end
@@ -38,13 +40,13 @@ function graphplot(A,C;test_mcl=false,e=2,r=3,p=20)
     push!(layers,
           layer(x = [xn1[i], xn2[i]], y = [yn1[i], yn2[i]], Geom.line, Theme(default_color=color("lightgrey")))[1])
   end
-  if test_mcl
-        part = map(k -> "$(vvfind(k,mcl_clust(mcl(A,e=e,r=r,p=p))))", 1:n)
-    push!(layers, layer(x = C[:,1], y = C[:,2], color = part, Geom.point)[1])
+    if length(C) == 0
+    push!(layers, layer(x = V[:,1], y = V[:,2], Geom.point)[1])
   else
-    push!(layers, layer(x = C[:,1], y = C[:,2], Geom.point)[1])
+    part = map(k -> "$(vvfind(k,C))", 1:n)
+    push!(layers, layer(x = V[:,1], y = V[:,2], color = part, Geom.point)[1])
   end
-  plot(layers)
+  return plot(layers)
 end
 
 "Regular polygon positionning"
@@ -74,7 +76,7 @@ Input : A, adjacency matrix of an undirected network
     test_mcl, boolean deciding whether MCL algorithm is executed for determining and coloring expected clusters
     init, string setting the original position of the vertices
 Output : corresponding graph"""
-function netplot(A; K=100, test_mcl=false, init="rand")
+function netplot(A; K=100, C=Vector[], init="rand")
   n = size(A,1)
   R = 10
   L = 2*R/(n/2)
@@ -125,5 +127,5 @@ function netplot(A; K=100, test_mcl=false, init="rand")
       nodes[i,2] = nodes[i,2] + dy
     end
   end
-    return graphplot(A,nodes,test_mcl=test_mcl)
+    return graphplot(nodes,A,C=C)
 end

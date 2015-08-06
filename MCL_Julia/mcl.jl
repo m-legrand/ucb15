@@ -145,7 +145,7 @@ function mcl_clust(G; sort_v=false, sort_c=false, rev=false)
   end
   # Clusters sorting part
   if sort_c
-        p = sortperm(map(length, r), rev=rev)
+    p = sortperm(map(length, r), rev=rev)
     r = r[p]
   end
   return r

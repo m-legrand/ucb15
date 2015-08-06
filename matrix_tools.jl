@@ -4,12 +4,22 @@
 """Matrix permutation
 Input : A, square matrix
     perm, permutation vector (set to shuffle([1:size(A,1)]) to retrieve the former mat_shuffle
-Output : B, A with perm applied to its base of representation 
-    (vertices in the case of an adjacency matrix)"""
-function mat_perm(A, perm)
+    rev, boolean
+Output : A with perm applied to its base of representation 
+    (set rev to true to apply reverse permutation)"""
+function mat_perm(A, perm; rev=false)
     n = size(A,1)
-    B = [A[perm[i],perm[j]] for i=1:n, j=1:n]
-    return B
+    if rev
+        return [A[perm[i],perm[j]] for i=1:n, j=1:n]
+    else
+        B = zeros(n,n)
+        for i = 1:n
+            for j = 1:n
+                B[perm[i],perm[j]] = A[i,j]
+            end
+        end
+        return B
+    end
 end
 
 """Matrix shuffle
@@ -28,7 +38,7 @@ function vv_perm(C, perm)
     K = size(C,1)
     Cp = Vector[]
     for k = 1:K
-        push!(Cp, map(x -> perm[x], C[k])
+        push!(Cp, map(x -> perm[x], C[k]))
     end
     return Cp
 end

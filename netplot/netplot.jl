@@ -1,6 +1,6 @@
 ################################################################################
 ########## Plotting functions for Network using Gadfly                ##########
-########## Maxime Legrand - Summer 2015                               ##########
+########## Maxime Legrand - Berkeley 2015                             ##########
 ################################################################################
 
 # Pkg.add("Gadfly")
@@ -73,10 +73,11 @@ Inspired from physics, but not physically correct
 Notations of "Simple Algorithms for Network Visualization" by M. J. McGuffin
 Input : A, adjacency matrix of an undirected network
     K, number of steps taken by the algorithm
-    test_mcl, boolean deciding whether MCL algorithm is executed for determining and coloring expected clusters
+    C, clusters to color
     init, string setting the original position of the vertices
+    nodes, if init is set to "custom", initial position of the nodes
 Output : corresponding graph"""
-function netplot(A; K=100, C=Vector[], init="rand")
+function netplot(A; K=100, C=Vector[], init="rand", nodes=[])
   n = size(A,1)
   R = 10
   L = 2*R/(n/2)
@@ -127,5 +128,5 @@ function netplot(A; K=100, C=Vector[], init="rand")
       nodes[i,2] = nodes[i,2] + dy
     end
   end
-    return graphplot(nodes,A,C=C)
+  return graphplot(nodes,A,C=C)
 end

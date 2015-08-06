@@ -29,18 +29,17 @@ function mcl(A;e=2,r=3,p=20,dc="none",de=(if e==2 0 else 1 end),dr=(r*0.2))
             B3 = mcl_norm(mcl_inflate(mcl_expand(B3,e-de),r-dr))
             B4 = mcl_norm(mcl_inflate(mcl_expand(B4,e+de),r-dr))
         end
-        dc = maximum([norm(A-B1) norm(A-B1) norm(A-B1) norm(A-B1)])
+        dc = maximum([norm(A-B1) norm(A-B2) norm(A-B3) norm(A-B4)])
         return (A,dc)
     elseif dc=="forks"
         dc = zeros(p)
-        println("de=$de, dr=$dr")
         for i=1:p
             A = mcl_norm(mcl_inflate(mcl_expand(A,e),r))
             B1 = mcl_norm(mcl_inflate(mcl_expand(A,e+de),r+dr))
             B2 = mcl_norm(mcl_inflate(mcl_expand(A,e-de),r+dr))
             B3 = mcl_norm(mcl_inflate(mcl_expand(A,e-de),r-dr))
             B4 = mcl_norm(mcl_inflate(mcl_expand(A,e+de),r-dr))
-            dc[i] = maximum([norm(A-B1) norm(A-B1) norm(A-B1) norm(A-B1)])
+            dc[i] = maximum([norm(A-B1) norm(A-B2) norm(A-B3) norm(A-B4)])
         end
         return (A,dc)
     end

@@ -46,9 +46,12 @@ function graphplot(V, A; C=Vector[], title="", labels=false)
     part = map(k -> "$(vvfind(k,C))", 1:n)
         push!(layers, layer(x = V[:,1], y = V[:,2], color = part, Geom.point)[1])
   end
-  return plot(x = V[:,1], y = V[:,2], label = map(x->"$x",[1:n]), Geom.label,
+  if labels
+    return plot(x = V[:,1], y = V[:,2], label = map(x->"$x",[1:n]), Geom.label,
     layers, Guide.xlabel(""), Guide.ylabel(""), Guide.title(title))
-#    x = V[:,1], y = V[:,2], label = map(x->"$x",[1:n]), Geom.label)
+  else
+    return plot(layers, Guide.xlabel(""), Guide.ylabel(""), Guide.title(title))
+  end
 end
 
 "Regular polygon positionning"

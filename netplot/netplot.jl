@@ -19,7 +19,7 @@ Input : V, n*2 matrix of vextices coordinates
     A, n*n adjacency matrix
 C, a vector of clusters to differentiate by vertices' color, Vector[] by default
 Output : Corresponding undirected n-network plot"""
-function graphplot(V, A; C=Vector[], title="")
+function graphplot(V, A; C=Vector[], title="", labels=false)
   n = size(V,1)
   xn1 = Float64[]
   yn1 = Float64[]
@@ -40,13 +40,15 @@ function graphplot(V, A; C=Vector[], title="")
     push!(layers,
           layer(x = [xn1[i], xn2[i]], y = [yn1[i], yn2[i]], Geom.line, Theme(default_color=color("lightgrey")))[1])
   end
-    if length(C) == 0
-    push!(layers, layer(x = V[:,1], y = V[:,2], Geom.point)[1])
+  if length(C) == 0
+        push!(layers, layer(x = V[:,1], y = V[:,2], Geom.point)[1])
   else
     part = map(k -> "$(vvfind(k,C))", 1:n)
-    push!(layers, layer(x = V[:,1], y = V[:,2], color = part, Geom.point)[1])
+        push!(layers, layer(x = V[:,1], y = V[:,2], color = part, Geom.point)[1])
   end
-  return plot(layers, Guide.xlabel(""), Guide.ylabel(""), Guide.title(title))
+  return plot(x = V[:,1], y = V[:,2], label = map(x->"$x",[1:n]), Geom.label,
+    layers, Guide.xlabel(""), Guide.ylabel(""), Guide.title(title))
+#    x = V[:,1], y = V[:,2], label = map(x->"$x",[1:n]), Geom.label)
 end
 
 "Regular polygon positionning"
@@ -77,7 +79,7 @@ Input : A, adjacency matrix of an undirected network
     init, string setting the original position of the vertices
     nodes, if init is set to "custom", initial position of the nodes
 Output : corresponding graph"""
-function netplot(A; K=100, C=Vector[], init="rand", nodes=[], title="")
+function netplot(A; K=100, C=Vector[], init="rand", nodes=[], title="", labels=false)
   n = size(A,1)
   R = 10
   L = 2*R/(n/2)
@@ -128,5 +130,5 @@ function netplot(A; K=100, C=Vector[], init="rand", nodes=[], title="")
       nodes[i,2] = nodes[i,2] + dy
     end
   end
-  return graphplot(nodes, A, C=C, title=title)
+    return graphplot(nodes, A, C=C, title=title, labels=labels)
 end

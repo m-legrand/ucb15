@@ -36,15 +36,15 @@ function graphplot(V, A; C=Vector[], title="", labels=false)
     end
   end
   layers = Layer[]
-  for i=1:length(xn1)
-    push!(layers,
-          layer(x = [xn1[i], xn2[i]], y = [yn1[i], yn2[i]], Geom.line, Theme(default_color=color("lightgrey")))[1])
-  end
   if length(C) == 0
         push!(layers, layer(x = V[:,1], y = V[:,2], Geom.point)[1])
   else
     part = map(k -> "$(vvfind(k,C))", 1:n)
         push!(layers, layer(x = V[:,1], y = V[:,2], color = part, Geom.point)[1])
+  end
+  for i=1:length(xn1)
+    push!(layers,
+          layer(x = [xn1[i], xn2[i]], y = [yn1[i], yn2[i]], Geom.line, Theme(default_color=color("lightgrey")))[1])
   end
   if labels
     return plot(x = V[:,1], y = V[:,2], label = map(x->"$x",[1:n]), Geom.label,

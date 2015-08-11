@@ -48,9 +48,11 @@ function graphplot(V, A; C=Vector[], title="", labels=false)
   end
   if labels
     return plot(x = V[:,1], y = V[:,2], label = map(x->"$x",[1:n]), Geom.label,
-    layers, Guide.xlabel(""), Guide.ylabel(""), Guide.title(title))
+        layers, Guide.xlabel(""), Guide.ylabel(""), Guide.title(title), 
+        Theme(grid_line_width=0mm, minor_label_font_size=0mm))
   else
-    return plot(layers, Guide.xlabel(""), Guide.ylabel(""), Guide.title(title))
+    return plot(layers, Guide.xlabel(""), Guide.ylabel(""), Guide.title(title), 
+        Theme(grid_line_width=0mm, minor_label_font_size=0mm))
   end
 end
 

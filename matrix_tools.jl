@@ -56,3 +56,20 @@ function sbm_clust(l)
     end
     return C
 end
+
+"""Bond forcing
+Input : C, vector of cluster
+    a, b, nodes that the user wants in the same cluster
+Output : Cm with at most two clusters merged in one such as a and b are in the same cluster"""
+function force_bond(C,a,b)
+    ia = findfirst(v -> (findfirst(v, a) != 0), C)
+    ib = findfirst(v -> (findfirst(v, b) != 0), C)
+    if ia > ib; ia, ib = ib, ia; end
+    if ia == ib
+        Cm = copy(C)
+    else
+        Cm = vcat(C[1:(ib-1)], C[(ib+1):end])
+        Cm[ia] = vcat(C[ia], C[ib])
+    end
+    return Cm
+end

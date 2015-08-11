@@ -17,9 +17,9 @@ end
 """Graph Plot
 Input : V, n*2 matrix of vextices coordinates
     A, n*n adjacency matrix
-C, a vector of clusters to differentiate by vertices' color, Vector[] by default
+    C, a vector of clusters to differentiate by vertices' color, Vector[] by default
 Output : Corresponding undirected n-network plot"""
-function graphplot(V, A; C=Vector[], title="", labels=false)
+function graphplot(V, A; C=Vector[], title="", labels=false, key_position=:none)
   n = size(V,1)
   xn1 = Float64[]
   yn1 = Float64[]
@@ -49,10 +49,10 @@ function graphplot(V, A; C=Vector[], title="", labels=false)
   if labels
     return plot(x = V[:,1], y = V[:,2], label = map(x->"$x",[1:n]), Geom.label,
         layers, Guide.xlabel(""), Guide.ylabel(""), Guide.title(title), 
-        Theme(grid_line_width=0mm, minor_label_font_size=0mm))
+        Theme(grid_line_width=0mm, minor_label_font_size=0mm, key_position=key_position))
   else
     return plot(layers, Guide.xlabel(""), Guide.ylabel(""), Guide.title(title), 
-        Theme(grid_line_width=0mm, minor_label_font_size=0mm))
+        Theme(grid_line_width=0mm, minor_label_font_size=0mm, key_position=key_position))
   end
 end
 
@@ -83,8 +83,9 @@ Input : A, adjacency matrix of an undirected network
     C, clusters to color
     init, string setting the original position of the vertices
     nodes, if init is set to "custom", initial position of the nodes
+    key_position, among {:right, :left, :top, :bottom, :none}
 Output : corresponding graph"""
-function netplot(A; K=100, C=Vector[], init="rand", nodes=[], title="", labels=false)
+function netplot(A; K=100, C=Vector[], init="rand", nodes=[], title="", labels=false, key_position=:none)
   n = size(A,1)
   R = 10
   L = 2*R/(n/2)
@@ -135,5 +136,5 @@ function netplot(A; K=100, C=Vector[], init="rand", nodes=[], title="", labels=f
       nodes[i,2] = nodes[i,2] + dy
     end
   end
-    return graphplot(nodes, A, C=C, title=title, labels=labels)
+    return graphplot(nodes, A, C=C, title=title, labels=labels, key_position=key_position)
 end

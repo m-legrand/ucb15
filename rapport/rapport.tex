@@ -1,0 +1,152 @@
+\documentclass[12pt,a4paper]{report}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[francais,frenchb]{babel}
+\usepackage[top=1.5cm, bottom=1.5cm, left=2cm, right=2cm]{geometry}
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{mathrsfs}
+\usepackage{amsthm}
+\usepackage{verbatim}
+\usepackage{moreverb}
+\usepackage{textcomp}
+
+\usepackage[affil-it]{authblk}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+\begin{document}
+
+\newcounter{Thm}
+\newtheorem{prop}[Thm]{Proposition}
+\newtheorem{lemme}[Thm]{Lemme}
+\newtheorem{cor}[Thm]{Corollaire}
+\newtheorem{defi}{Définition}
+\newtheorem{theo}[Thm]{Théorème}
+
+\newtheorem*{demonstration}{Démonstration}
+\newenvironment{demo}{\begin{samepage} \begin{demonstration} \upshape }{ \end{demonstration} \end{samepage}}
+\newtheorem*{remarque}{Remarque}
+\newenvironment{rmq}{\begin{samepage} \begin{remarque} \upshape }{ \end{remarque} \end{samepage}}
+\newtheorem*{exercice}{Exercice d'application}
+\newenvironment{exo}{\begin{samepage} \begin{exercice} \upshape }{ \end{exercice} \end{samepage}}
+\newtheorem*{exemple}{Exemple}
+\newenvironment{ex}{\begin{samepage} \begin{exemple} \upshape }{ \end{exemple} \end{samepage}}
+\newtheorem*{remarques}{Remarques}
+\newenvironment{rmqs}{\begin{samepage} \begin{remarques} \upshape }{ \end{remarques} \end{samepage}}
+
+\newcommand{\rA}{\mathcal{A}}
+\newcommand{\rC}{\mathcal{C}}
+\newcommand{\rD}{\mathcal{D}}
+\newcommand{\rE}{\mathcal{E}}
+\newcommand{\rF}{\mathcal{F}}
+\newcommand{\rG}{\mathcal{G}}
+\newcommand{\rP}{\mathcal{P}}
+\newcommand{\rH}{\mathcal{H}}
+\newcommand{\rR}{\mathcal{R}}
+\newcommand{\rL}{\mathcal{L}}
+\newcommand{\rM}{\mathcal{M}}
+\newcommand{\bD}{\mathbb{D}}
+\newcommand{\bK}{\mathbb{K}}
+\newcommand{\bQ}{\mathbb{Q}}
+\newcommand{\bR}{\mathbb{R}}
+\newcommand{\bU}{\mathbb{U}}
+\newcommand{\bZ}{\mathbb{Z}}
+\newcommand{\bN}{\mathbb{N}}
+\newcommand{\bC}{\mathbb{C}}
+\newcommand{\bP}{\mathbb{P}}
+\newcommand{\bF}{\mathbb{F}}
+\newcommand{\eps}{\varepsilon}
+
+\renewcommand{\thechapter}{\Roman{chapter}}
+
+\ifpdf
+\DeclareGraphicsExtensions{.pdf, .jpg, .tif}
+\else
+\DeclareGraphicsExtensions{.eps, .jpg}
+\fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{titlepage}
+\begin{center}
+
+~\\[1.5cm]
+\textsc{\Large Rapport de stage de M1}\\[0.5cm]
+
+% Title
+\HRule \\[0.4cm]
+{ \huge \bfseries Markov Cluster Algorithm\\[0.4cm] }
+
+\HRule \\[1.5cm]
+
+{\large Maxime \textsc{Legrand}}\\
+~\\
+{\large \emph{École Normale Supérieure, Paris}}\\
+~\\[1cm]
+{\large Encadré par :}\\
+~\\
+{\large Noureddine El Karoui}\\
+~\\
+{\large \emph{University of California, Berkeley}}\\
+
+\vfill
+
+\includegraphics[height=0.3\textwidth]{images/logoens.png} \hspace{2.5cm}
+\includegraphics[height=0.3\textwidth]{images/logoucb.jpg}~\\
+
+\vfill
+
+% Bottom of the page
+{\large 28 août 2015}
+\end{center}
+\end{titlepage}
+
+\tableofcontents
+
+\newpage
+
+\chapter*{Introduction}
+\addcontentsline{toc}{chapter}{Introduction}
+
+\stepcounter{chapter}
+\chapter*{\thechapter . }
+\addcontentsline{toc}{chapter}{\thechapter . }
+
+\section{}
+
+\section{}
+
+\section{}
+
+\stepcounter{chapter}
+\chapter*{\thechapter . }
+\addcontentsline{toc}{chapter}{\thechapter . }
+
+\section{}
+
+\section{}
+
+\section{}
+
+\stepcounter{chapter}
+\chapter*{\thechapter . }
+\addcontentsline{toc}{chapter}{\thechapter . }
+
+\section{}
+
+\section{}
+
+\section{}
+
+\chapter*{Conclusion}
+\addcontentsline{toc}{chapter}{Conclusion}
+
+\nocite{vandongen00}
+\bibliography{rapport}
+\bibliographystyle{plain}
+
+\end{document}

@@ -36,6 +36,13 @@
 ehthumbs.db
 Thumbs.db
 
+# LaTeX generated files #
+#########################
+*.aux
+*.bbl
+*.blg
+*.toc
+
 # Specific ignored files #
 ##########################
 .ipynb_checkpoints
@@ -43,5 +50,5 @@ Thumbs.db
 test_*
 data
 *.html
-*.tex
 *.pdf
+

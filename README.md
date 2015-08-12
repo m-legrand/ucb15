@@ -5,7 +5,7 @@ Files of Maxime Legrand's M1 internship in UC Berkeley (Summer 2015)
  - `MCL_Julia` : Actual work on MCL with the [Julia language][jlang]
  - `netplot` : In-development tool to plot fancy networks with Julia using [Gadfly][gadfly]
  given at least an adjacency matrix
- - `rapport` (FR) : Internship report
+ - `rapport` : Internship report (FR)
  
 ## Contributors
  - [Noureddine El Karoui][nek] : Internship advisor (UCB Associate Professor)
